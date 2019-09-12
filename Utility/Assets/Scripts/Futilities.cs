@@ -6,8 +6,19 @@ using System.Globalization;
 using System;
 
 
+
 public static class Futilities
 {
+    //public Dictionary<Char, int> charDict = null;
+    
+    public static int getAverageTokenLength(string input)
+    {
+        string[] tokens = input.Split();
+        return input.Length / tokens.Length;
+    }
+
+
+
     public static string reverse(string input)
     {
         string output = "";
@@ -47,4 +58,7 @@ public static class Futilities
         }
         return "" + numNum + " Numbers and " + numStr + " Strings.";
     }
+
+    
+
     }
