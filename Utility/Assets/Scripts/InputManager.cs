@@ -9,6 +9,7 @@ public class InputManager : MonoBehaviour
     public InputField inputField = null;
     public Text outputField = null;
     public GameObject LetterSpherePrefab = null;
+    public List<GameObject> oldSpheres = null;
     void Start()
     {
         inputField.text = "";
@@ -29,6 +30,21 @@ public class InputManager : MonoBehaviour
     //shove this somewhere else once it works.
     public void makeSomeSpheres(GameObject prefab,string input)
     {
+        if(oldSpheres!=null)
+        {
+            foreach(GameObject g in oldSpheres)
+            {
+                Destroy(g);
+            }
+            oldSpheres.Clear();
+        }
+        else
+        {
+            oldSpheres = new List<GameObject>();
+        }
+
+
+
 
         Dictionary<char, int> charDict = new Dictionary<char, int>() ;
 
@@ -57,6 +73,7 @@ public class InputManager : MonoBehaviour
                     newGO.transform.position = new Vector3(1.1f * pos++, 0, 0);
                     newGO.GetComponentInChildren<TextMesh>().text = "" + c.Key+"\n"+c.Value;
                     Debug.Log("" + c.Key + "\n" + c.Value);
+                    oldSpheres.Add(newGO);
                 }
             }
            
