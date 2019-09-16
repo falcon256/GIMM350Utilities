@@ -1,0 +1,7 @@
+Order of operations when a solution isn't obvious:
+1. Intellisense
+2. See if my machine learning based code completion has anything similar to suggest and try that out.
+3. Unity ECS examples, if they aren't out of date.
+4. Unity documentation, if it isn't out of date.
+5. Google what I'm trying to do, get no more than a bit of API reference and the return to step 1 without copy/pasting more than a method name.
+6. I've literally never gotten past step 5, so if you get to this step: delete the project and move somewhere without internet.
