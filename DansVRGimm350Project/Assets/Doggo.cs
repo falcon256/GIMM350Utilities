@@ -13,6 +13,7 @@ public class Doggo : MonoBehaviour
     public float[] myInputs = null;// new float[neuronWidth];
     public GameObject doggoPrefab = null;
     public static int xoffset = -100;
+    public static Network highScoreNetwork = null;
     
     // Start is called before the first frame update
     void Start()
@@ -33,7 +34,7 @@ public class Doggo : MonoBehaviour
         if (myNetwork == null)
         {
             myNetwork = new Network();
-            myNetwork.Init(5, neuronWidth);
+            myNetwork.Init(3, neuronWidth);
         }
 
         ConfigurableJoint[] joints = this.GetComponentsInChildren<ConfigurableJoint>();
@@ -67,6 +68,7 @@ public class Doggo : MonoBehaviour
         for(int i = 0; i < joints.Length; i++)
         {
             joints[i].targetAngularVelocity = new Vector3(outputs[index++], outputs[index++], outputs[index++]);
+            
         }
         //Debug.Log(outputs[0]);
         //currentHighestScore *= 0.999f;
@@ -111,22 +113,31 @@ public class Doggo : MonoBehaviour
 
         if(lifeLived > maxLifetime)
         {
-            float myscore = this.transform.position.z + this.transform.position.y;
+            float myscore = this.transform.position.z;
             if (float.IsNaN(myscore) || float.IsInfinity(myscore))
                 myscore = 0;
             lifeLived = 0;
-            this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y+0.01f, 0);
+            this.transform.position = new Vector3(this.transform.position.x, 5.0f, 0);
 
             if (myscore >= currentHighestScore)
             {
                 currentHighestScore = myscore;
                 Network newNet = myNetwork.GetMutatedChild(1.0f / (1.0f+myscore), 1.0f / (1.0f + myscore), 1.0f / (1.0f + myscore));
+                highScoreNetwork = myNetwork;
+                oldNetwork = myNetwork;
                 myNetwork = newNet;
-                Debug.Log("New high score: " + currentHighestScore);
+                Debug.Log("New Neural Network score: " + currentHighestScore);
+
             }
             else
             {
-                if(oldNetwork!=null)
+               
+                if(highScoreNetwork!=null)
+                {
+                    myNetwork = highScoreNetwork.GetMutatedChild(1.0f / (1.0f + myscore), 1.0f / (1.0f + myscore), 1.0f / (1.0f + myscore));
+                    currentHighestScore -= 0.00001f;
+                }
+                else if(oldNetwork!=null)
                 {
                     myNetwork = oldNetwork;
                 }
@@ -137,7 +148,7 @@ public class Doggo : MonoBehaviour
 
 
 
-            maxLifetime = 0.2f + Mathf.Log10(myscore);
+            maxLifetime = 1.0f + myscore;
             if (float.IsNaN(maxLifetime)||float.IsInfinity(maxLifetime))
                 maxLifetime = 1.0f;
         }

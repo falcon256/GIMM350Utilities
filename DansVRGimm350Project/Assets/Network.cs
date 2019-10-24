@@ -52,7 +52,7 @@ public class Network
                 {
                     //the web says tanh(x) = 1-2/(1+exp(2*x)) = (exp(2*x)-1)/(exp(2*x)+1)
                     //hyperbolic tangent activation function
-                    values[layer+1,neuronOut]+=biases[layer,neuron,neuronOut]+(weights[layer,neuron,neuronOut]* HyperbolicTangtent(values[layer,neuron]));
+                    values[layer+1,neuronOut]+=biases[layer,neuron,neuronOut]+(weights[layer,neuron,neuronOut]* (float)System.Math.Tanh(values[layer,neuron]));
                 }
             }
         }
@@ -61,12 +61,7 @@ public class Network
             outputs[i] = values[layerCount - 1, i];
         return outputs;
     }
-    public float HyperbolicTangtent(float x)
-    {
-        if (x < -45.0) return -1.0f;
-        else if (x > 45.0) return 1.0f;
-        else return (float)System.Math.Tanh(x);
-    }
+
 
     public Network GetMutatedChild(float biasMod, float weightMod, float modChance)
     {
