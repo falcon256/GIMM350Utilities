@@ -20,6 +20,17 @@ public class Network
         weights = new float[layerCount, layerWidth, layerWidth];
         biases = new float[layerCount, layerWidth, layerWidth];
         values = new float[layerCount, layerWidth];
+        for (int layer = 0; layer < layerCount - 1; layer++)//don't calc the last layer.
+        {
+            for (int neuron = 0; neuron < layerWidth; neuron++)
+            {
+                for (int neuronOut = 0; neuronOut < layerWidth; neuronOut++)
+                {
+                    weights[layer, neuron, neuronOut] = 0;
+                    biases[layer, neuron, neuronOut] = 0;
+                }
+            }
+        }
     }
 
     public float[] Tick(float[] inputs)
@@ -41,14 +52,20 @@ public class Network
                 {
                     //the web says tanh(x) = 1-2/(1+exp(2*x)) = (exp(2*x)-1)/(exp(2*x)+1)
                     //hyperbolic tangent activation function
-                    values[layer+1,neuronOut]+=biases[layer,neuron,neuronOut]+(weights[layer,neuron,neuronOut]*((Mathf.Exp(2.0f * values[layer,neuron]) - 1) / (Mathf.Exp(2.0f * values[layer, neuron]) + 1)));
+                    values[layer+1,neuronOut]+=biases[layer,neuron,neuronOut]+(weights[layer,neuron,neuronOut]* HyperbolicTangtent(values[layer,neuron]));
                 }
             }
         }
-
+        //Debug.Log(values[1,0]);
         for (int i = 0; i < layerWidth; i++)
             outputs[i] = values[layerCount - 1, i];
         return outputs;
+    }
+    public float HyperbolicTangtent(float x)
+    {
+        if (x < -45.0) return -1.0f;
+        else if (x > 45.0) return 1.0f;
+        else return (float)System.Math.Tanh(x);
     }
 
     public Network GetMutatedChild(float biasMod, float weightMod, float modChance)
