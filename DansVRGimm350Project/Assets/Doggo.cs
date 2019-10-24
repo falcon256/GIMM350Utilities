@@ -135,7 +135,7 @@ public class Doggo : MonoBehaviour
                 if(highScoreNetwork!=null)
                 {
                     myNetwork = highScoreNetwork.GetMutatedChild(1.0f / (1.0f + myscore), 1.0f / (1.0f + myscore), 1.0f / (1.0f + myscore));
-                    currentHighestScore -= 0.00001f;
+                    currentHighestScore -= 0.001f;
                 }
                 else if(oldNetwork!=null)
                 {
@@ -144,11 +144,19 @@ public class Doggo : MonoBehaviour
             }
 
 
+            //for (int i = 0; i < rbs.Length; i++)
+            //{
+            //    if (rbs[i].gameObject != this.gameObject)
+            //    {
+            //        rbs[i].gameObject.transform.localPosition = Vector3.zero;
+            //        rbs[i].gameObject.transform.localRotation = Quaternion.identity;
+            //    }
+            //}
 
 
 
 
-            maxLifetime = 1.0f + myscore;
+                maxLifetime = 1.0f + myscore;
             if (float.IsNaN(maxLifetime)||float.IsInfinity(maxLifetime))
                 maxLifetime = 1.0f;
         }

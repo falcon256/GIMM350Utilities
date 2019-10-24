@@ -8,7 +8,7 @@ public class Spawner : MonoBehaviour
     public GameObject Prefab = null;
     void Start()
     {
-        for(int i = 0; i < 30; i++)
+        for(int i = 0; i < 50; i++)
         {
             GameObject goob = Instantiate(Prefab, new Vector3(i++ * 5.0f, 5, 0), Quaternion.LookRotation(Vector3.forward, Vector3.up));
         }
